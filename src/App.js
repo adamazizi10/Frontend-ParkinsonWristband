@@ -1,12 +1,14 @@
-import './App.css';
-import RegisterPatient from './components/RegisterPatient/RegisterPatient'
-
+import React from 'react';
+import ThreeDGraph from './components/ThreeDGraph'
+import RegisterPatient from './components/RegisterPatient/RegisterPatient';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <RegisterPatient />
-    </div>
+      <ThreeDGraph />
+    </>
+
   );
 }
 

@@ -39,3 +39,8 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.graphDiv {
+  display: flex;
+
+}

@@ -51,9 +51,9 @@ function RegisterPatient() {
                     <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{ color: 'hsl(218, 81%, 95%)' }}>
                         <Typewriter
                             words={[
-                                "Welcome to the Techno Parkinson's Dieasese Simulator and Detector",
-                                "Our Wristband is capable of detecting parkinson's Diease",
-                                "Along with showing its levels such as Low, Moderate, or High"
+                                "Welcome to the Parkinson's Disease Detection & Simulation Technology",
+                                "Our advanced wristband is equipped to detect Parkinson's Disease",
+                                "And provide detailed insights, categorizing its severity as Low, Moderate, or High"
                             ]}
                             loop={false}
                             typeSpeed={50}
@@ -61,12 +61,7 @@ function RegisterPatient() {
                             delaySpeed={2000} />
                     </h1>
 
-                    <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eveniet, itaque accusantium odio, soluta, corrupti aliquam
-                        quibusdam tempora at cupiditate quis eum maiores libero
-                        veritatis? Dicta facilis sint aliquid ipsum atque?
-                    </p>
+                    <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}></p>
 
                 </MDBCol>
 
