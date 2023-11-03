@@ -44,3 +44,7 @@ body {
   display: flex;
 
 }
+
+.ProfilePageContainer {
+  margin-bottom: 0px;
+}

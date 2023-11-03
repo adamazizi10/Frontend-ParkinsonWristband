@@ -4,7 +4,7 @@ import './RegisterPatient.css'
 import { Typewriter } from 'react-simple-typewriter'
 
 
-function RegisterPatient() {
+function RegisterPatient({ onDataReceived, changeState }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [age, setAge] = useState('');
@@ -26,6 +26,7 @@ function RegisterPatient() {
             setError('Please enter a number in the age field')
             return;
         }
+
         fetch('http://localhost:3001/register', {
             method: 'post',
             headers: { 'content-type': 'application/json' },
@@ -36,7 +37,14 @@ function RegisterPatient() {
             })
         })
             .then((response) => response.json())
-            .then((data) => console.log(`ID is ${data.id} and Name is ${data.first_name}`))
+            .then((data) => {
+                if (data.first_name) {
+                    onDataReceived(data)
+                    changeState('patientProfile')
+                } else {
+                    setError('Patient Already Exists, Please Try Again')
+                }
+            })
             .catch((error) => {
                 setError('An error occurred while registering the patient.');
             });
@@ -75,7 +83,7 @@ function RegisterPatient() {
                             <MDBInput onChange={onAgeChange} wrapperClass='mb-4' label='Age' id='form3' type='text' />
                             {error && <div className="alert alert-danger">{error}</div>}
                             <MDBBtn onClick={onRegisterClick} className='w-100 mb-4' size='md'>Add Patient</MDBBtn>
-                            <p>Or Access an Exisiting one <a><u>here</u></a></p>
+                            <p>Or Access an Exisiting one <a onClick={() => changeState('searchPatient')} href='#'><u>here</u></a></p>
                         </MDBCardBody>
                     </MDBCard>
 
