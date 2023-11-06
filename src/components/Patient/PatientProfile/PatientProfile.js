@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
-import '../../App.css';
+import '../../../App.css';
 import PatientDetails from './PatientDetails';
 import { MDBContainer } from 'mdb-react-ui-kit';
 
-function UserProfile({ userData, changeState }) {
+function PatientProfile({ patientData, changeState }) {
   const [data, setData] = useState({
     t: [],
     x: [],
@@ -22,13 +22,13 @@ function UserProfile({ userData, changeState }) {
   const [dataFetched, setDataFetched] = useState(false);
 
   const [cameraSettings, setCameraSettings] = useState({
-    up: { x: 0, y: 0, z: 1 }, // Define the up direction
-    center: { x: 0, y: 0, z: 0 }, // Define the camera center point
+    up: { x: 0, y: 0, z: 1 },
+    center: { x: 0, y: 0, z: 0 },
   });
 
   useEffect(() => {
     // Fetch data from the backend server
-    fetch('http://localhost:3001/extract-data')
+    fetch('http://localhost:3001/extract-microcontroller-data')
       .then((response) => response.json())
       .then((responseData) => {
         // Update the state with the fetched data
@@ -38,7 +38,7 @@ function UserProfile({ userData, changeState }) {
           y: responseData.y,
           z: responseData.z,
         });
-        setDataFetched(true); // Signal that data is fetched
+        setDataFetched(true);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -57,7 +57,7 @@ function UserProfile({ userData, changeState }) {
             z: [...plotData.z, data.z[nextIndex]],
           });
         }
-      }, 1000); // 1-second delay
+      }, 1000);
 
       return () => clearInterval(timer);
     }
@@ -67,11 +67,11 @@ function UserProfile({ userData, changeState }) {
     x: plotData.x,
     y: plotData.y,
     z: plotData.z,
-    mode: 'lines+markers', // Display both lines and markers
+    mode: 'lines+markers',
     type: 'scatter3d',
     line: {
-      color: 'blue', // Color of the line
-      width: 2, // Width of the line
+      color: 'blue',
+      width: 2,
     },
     marker: {
       size: 12,
@@ -82,14 +82,14 @@ function UserProfile({ userData, changeState }) {
   };
 
   const layout = {
-    height: 820,
+    height: 860,
     width: 820,
     title: `Tremor Results In 3D`,
     scene: {
       xaxis: { range: [0, Math.max(...data.x)] },
       yaxis: { range: [0, Math.max(...data.y)] },
       zaxis: { range: [0, Math.max(...data.z)] },
-      camera: cameraSettings, // Set camera settings
+      camera: cameraSettings,
     },
   };
 
@@ -106,7 +106,6 @@ function UserProfile({ userData, changeState }) {
             layout={layout}
             onRelayout={(figure) => {
               if (figure.scene && figure.scene.camera) {
-                // Update the camera settings
                 setCameraSettings(figure.scene.camera);
               }
             }}
@@ -116,15 +115,14 @@ function UserProfile({ userData, changeState }) {
         )}
       </div>
       <div style={{ marginLeft: '180px' }}>
-        <PatientDetails userData={userData} Data={data} />
+        <PatientDetails patientData={patientData} Data={data} />
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'white' }}>
-          <span style={{color: 'white' }} >Add a <a onClick={() => changeState('registerPatient')} style={{color: '#22c1c3'}} href='#'><u>new Patient</u></a></span>
-          <a style={{color: 'white' }} href='#'> or <a onClick={() => changeState('searchPatient')} style={{color: '#22c1c3'}} href='#'><u>Search</u></a> an Exisiting One</a>
+          <span style={{ color: 'white' }}>Add a <button onClick={() => changeState('addPatient')} style={{ color: '#22c1c3', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>new Patient</button></span>
+          <span style={{ color: 'white' }}> or <button onClick={() => changeState('searchPatient')} style={{ color: '#22c1c3', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>Search an Existing One</button></span>
         </div>
       </div>
-
     </MDBContainer>
   );
 }
 
-export default UserProfile;
+export default PatientProfile;

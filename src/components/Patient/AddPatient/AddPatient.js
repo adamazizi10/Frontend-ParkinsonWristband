@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } from 'mdb-react-ui-kit';
-import './RegisterPatient.css'
+import './AddPatient.css'
 import { Typewriter } from 'react-simple-typewriter'
 
 
-function RegisterPatient({ onDataReceived, changeState }) {
+function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [age, setAge] = useState('');
@@ -13,6 +13,12 @@ function RegisterPatient({ onDataReceived, changeState }) {
     const onFirstNameChange = (event) => setFirstName(event.target.value);
     const onLastNameChange = (event) => setLastName(event.target.value);
     const onAgeChange = (event) => setAge(event.target.value);
+
+    function randomParkinsonStatus() {
+        const letters = ['none', 'low', 'moderate', 'high'];
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        return letters[randomIndex];
+    }
 
     const onRegisterClick = (event) => {
         event.preventDefault();
@@ -23,26 +29,29 @@ function RegisterPatient({ onDataReceived, changeState }) {
         }
 
         if (isNaN(age)) {
-            setError('Please enter a number in the age field')
+            setError('Please enter a number in the age field');
             return;
         }
 
-        fetch('http://localhost:3001/register', {
+        // Pass the doctor's ID received from onDoctorDataReceived
+        fetch('http://localhost:3001/add-patient', {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 first_name: firstName,
                 last_name: lastName,
-                age: age
+                age: age,
+                parkinson_status: randomParkinsonStatus(),
+                doctor_id: doctorData.id // Replace 'doctorId' with the actual variable that holds the doctor's ID
             })
         })
             .then((response) => response.json())
             .then((data) => {
                 if (data.first_name) {
-                    onDataReceived(data)
-                    changeState('patientProfile')
+                    onPatientDataRecieved(data);
+                    changeState('patientProfile');
                 } else {
-                    setError('Patient Already Exists, Please Try Again')
+                    setError('Patient Already Exists, Please Try Again');
                 }
             })
             .catch((error) => {
@@ -83,7 +92,7 @@ function RegisterPatient({ onDataReceived, changeState }) {
                             <MDBInput onChange={onAgeChange} wrapperClass='mb-4' label='Age' id='form3' type='text' />
                             {error && <div className="alert alert-danger">{error}</div>}
                             <MDBBtn onClick={onRegisterClick} className='w-100 mb-4' size='md'>Add Patient</MDBBtn>
-                            <p>Or Access an Exisiting one <a onClick={() => changeState('searchPatient')} href='#'><u>here</u></a></p>
+                            <p>Or Access an Existing one<button onClick={() => changeState('searchPatient')} value='searchPatient' style={{ textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>here</button></p>
                         </MDBCardBody>
                     </MDBCard>
 
@@ -95,4 +104,4 @@ function RegisterPatient({ onDataReceived, changeState }) {
     );
 }
 
-export default RegisterPatient;
+export default AddPatient;

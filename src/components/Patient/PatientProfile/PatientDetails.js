@@ -1,17 +1,8 @@
 import React from 'react';
 import './PatientDetails.css';
 
-function PatientDetails({ Data, userData }) {
-    //
-    function randomParkinsonStatus() {
-        const letters = ['none', 'low', 'moderate', 'high'];
-        const randomIndex = Math.floor(Math.random() * letters.length);
-        return letters[randomIndex];
-    }
-    if (userData.parkinson_status === null) {
-        userData.parkinson_status = randomParkinsonStatus()
-    }
-    // 
+function PatientDetails({ Data, patientData }) {
+    
     const dataRows = [];
     for (let i = 0; i < 10; i++) {
         dataRows.push(
@@ -28,8 +19,8 @@ function PatientDetails({ Data, userData }) {
         <div className="container">
             <div style={{ color: 'white' }}>
                 <h1 style={{ textAlign: 'center' }}>Patient Details</h1><hr />
-                <h4 style={{ textAlign: 'center' }}>Name:&nbsp; {userData.first_name} {userData.last_name}</h4>
-                <h4 style={{ textAlign: 'center' }}>Parkinson's Status: {userData.parkinson_status}</h4><hr /><br />
+                <h4 style={{ textAlign: 'center' }}>Name:&nbsp; {patientData.first_name} {patientData.last_name}</h4>
+                <h4 style={{ textAlign: 'center' }}>Parkinson's Status: {patientData.parkinson_status}</h4><hr /><br />
             </div>
             <div>
                 <h2 style={{ textAlign: 'center', color: 'white' }}>Tremor Results</h2>
