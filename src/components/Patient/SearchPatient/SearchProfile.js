@@ -68,10 +68,10 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
             <br />
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h1 style={{ marginLeft: '170px', textAlign: 'center', color: 'white', flex: 1 }}>Search a Patient</h1>
+                    <h1 style={{ marginLeft: '158px', textAlign: 'center', color: 'white', flex: 1 }}>Search a Patient</h1>
                     <div style={{ color: 'white', textDecoration: 'none', cursor: 'pointer' }}>
-                        <div onClick={() => changeState('addPatient')} style={{ color: '#22c1c3', textDecoration: 'underline' }}>
-                            Add a new Patient
+                        <div onClick={() => changeState('dashboardDoctor')} style={{ color: '#22c1c3', textDecoration: 'underline' }}>
+                            Go to Dashboard
                         </div>
                     </div>
                 </div>
@@ -108,8 +108,8 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
                             <td>{user.first_name || ''}</td>
                             <td>{user.last_name || ''}</td>
                             <td>{user.age || ''}</td>
-                            {/* <td>{user.isPhysician ? user.parkinson_status : 'private'}</td> */}
-                            <td>{user.parkinson_status}</td>
+                            <td>{user.isPhysician ? user.parkinson_status : 'private'}</td>
+                            {/* <td>{user.parkinson_status}</td> */}
                             <td>Dr. {user.physicianName || ''}</td>
                             <td>
                                 {user.isPhysician

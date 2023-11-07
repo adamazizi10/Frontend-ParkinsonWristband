@@ -117,8 +117,7 @@ function PatientProfile({ patientData, changeState }) {
       <div style={{ marginLeft: '180px' }}>
         <PatientDetails patientData={patientData} Data={data} />
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'white' }}>
-          <span style={{ color: 'white' }}>Add a <button onClick={() => changeState('addPatient')} style={{ color: '#22c1c3', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>new Patient</button></span>
-          <span style={{ color: 'white' }}> or <button onClick={() => changeState('searchPatient')} style={{ color: '#22c1c3', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>Search an Existing One</button></span>
+          <span style={{ color: 'white' }}>Go to<button onClick={() => changeState('dashboardDoctor')} style={{ color: '#22c1c3', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>Dashboard</button></span>
         </div>
       </div>
     </MDBContainer>

@@ -92,7 +92,7 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
                             <MDBInput onChange={onAgeChange} wrapperClass='mb-4' label='Age' id='form3' type='text' />
                             {error && <div className="alert alert-danger">{error}</div>}
                             <MDBBtn onClick={onRegisterClick} className='w-100 mb-4' size='md'>Add Patient</MDBBtn>
-                            <p>Or Access an Existing one<button onClick={() => changeState('searchPatient')} value='searchPatient' style={{ textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>here</button></p>
+                            <p>or go to<button onClick={() => changeState('dashboardDoctor')} value='searchPatient' style={{ textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>Dashboard</button></p>
                         </MDBCardBody>
                     </MDBCard>
 
