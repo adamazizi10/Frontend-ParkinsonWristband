@@ -95,11 +95,11 @@ function PatientProfile({ patientData, changeState }) {
 
   return (
     <MDBContainer
-      style={{ display: 'flex', padding: '0' }}
+      style={{ display: 'flex', padding: '0', height: '100vh'}}
       fluid
       className=' background-radial-gradient overflow-hidden ProfilePageContainer'
     >
-      <div>
+      <div style={{backgroundColor: 'white'}}>
         {dataFetched ? (
           <Plot
             data={[lineTrace]}

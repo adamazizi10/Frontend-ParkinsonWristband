@@ -6,6 +6,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
     const [patientData, setPatientData] = useState([]);
     const [doctorData, setDoctorData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [filterList, setFilterList] = useState('All');
 
     useEffect(() => {
         fetch('http://localhost:3001/get-all-patient-data')
@@ -31,6 +32,20 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
         setSearchQuery(event.target.value);
     };
 
+    const handleFilterChange = (event) => {
+        setFilterList(event.target.value);
+    };
+
+    const handleViewPatient = (patientId) => {
+        fetch(`http://localhost:3001/get-specific-patient-details/${patientId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                onPatientDataRecieved(data);
+                changeState('patientProfile');
+            })
+            .catch((error) => console.error('Error fetching patient details:', error));
+    };
+
     const filteredPatientData = patientData.map((patient) => {
         const doctor = doctorData.find((doc) => doc.id === patient.doctor_id);
         const physicianName = doctor ? `${doctor.first_name} ${doctor.last_name}` : '';
@@ -43,42 +58,51 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
         };
     }).filter((user) => {
         const query = searchQuery.toLowerCase();
-        return (
-            (user.id && user.id.toString().includes(query)) ||
-            (user.first_name && user.first_name.toLowerCase().includes(query)) ||
-            (user.last_name && user.last_name.toLowerCase().includes(query)) ||
-            (user.age && user.age.toString().includes(query)) ||
-            (user.parkinson_status && (user.isPhysician ? user.parkinson_status : 'private').toLowerCase().includes(query)) ||
-            (user.physicianName && user.physicianName.toLowerCase().includes(query))
-        );
+        if (filterList === "Doctor'sPatient") {
+            return user.isPhysician && (
+                (user.id && user.id.toString().includes(query)) ||
+                (user.first_name && user.first_name.toLowerCase().includes(query)) ||
+                (user.last_name && user.last_name.toLowerCase().includes(query)) ||
+                (user.age && user.age.toString().includes(query)) ||
+                (user.parkinson_status && user.parkinson_status.toLowerCase().includes(query)) ||
+                (user.physicianName && user.physicianName.toLowerCase().includes(query))
+            );
+        } else {
+            return (
+                (user.id && user.id.toString().includes(query)) ||
+                (user.first_name && user.first_name.toLowerCase().includes(query)) ||
+                (user.last_name && user.last_name.toLowerCase().includes(query)) ||
+                (user.age && user.age.toString().includes(query)) ||
+                (user.parkinson_status && (user.isPhysician ? user.parkinson_status : 'private').toLowerCase().includes(query)) ||
+                (user.physicianName && user.physicianName.toLowerCase().includes(query))
+            );
+        }
     });
 
-    const handleViewPatient = (patientId) => {
-        fetch(`http://localhost:3001/get-specific-patient-details/${patientId}`)
-            .then((response) => response.json())
-            .then((data) => {
-                onPatientDataRecieved(data);
-                changeState('patientProfile');
-            })
-            .catch((error) => console.error('Error fetching patient details:', error));
-    };
-
     return (
-        <MDBContainer fluid className='background-radial-gradient'>
+
+        <MDBContainer fluid className='background-radial-gradient' style={{ minHeight: '100vh' }}>
             <br />
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h1 style={{ marginLeft: '158px', textAlign: 'center', color: 'white', flex: 1 }}>Search a Patient</h1>
                     <div style={{ color: 'white', textDecoration: 'none', cursor: 'pointer' }}>
-                        <div onClick={() => changeState('dashboardDoctor')} style={{ color: '#22c1c3', textDecoration: 'underline' }}>
-                            Go to Dashboard
-                        </div>
+                        <div onClick={() => changeState('dashboardDoctor')} style={{ color: '#22c1c3', textDecoration: 'underline' }}>Dashboard</div>
+                    </div>
+                    <h1 style={{ marginLeft: '120px', textAlign: 'center', color: 'white', flex: 1 }}>Search a Patient</h1>
+                    <div style={{ color: 'white' }}>
+                        <div><b>Physician:</b> Dr. {SignedInDoctorData.last_name}</div>
                     </div>
                 </div>
                 <div>
                     <div className="input-group rounded">
                         <input
-                            style={{ margin: '0' }}
+                            style={{
+                                margin: '0',
+                                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                color: 'white'
+
+                            }}
+                            id='custom-input'
                             type="search"
                             className="form-control rounded searchBarPatient"
                             placeholder="Search"
@@ -86,9 +110,17 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
                             onChange={handleSearchInputChange}
                         />
                     </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div id='filterSelect' style={{ marginLeft: 'auto', marginTop: '10px', marginBottom: '10px' }}>
+                            <select value={filterList} onChange={handleFilterChange}>
+                                <option value="All">All</option>
+                                <option value="Doctor'sPatient">Doctor's Patients</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br />
+
             <table className="table-scroll small-first-col">
                 <thead>
                     <tr>
@@ -102,37 +134,59 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredPatientData.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.id || ''}</td>
-                            <td>{user.first_name || ''}</td>
-                            <td>{user.last_name || ''}</td>
-                            <td>{user.age || ''}</td>
-                            <td>{user.isPhysician ? user.parkinson_status : 'private'}</td>
-                            {/* <td>{user.parkinson_status}</td> */}
-                            <td>Dr. {user.physicianName || ''}</td>
-                            <td>
-                                {user.isPhysician
-                                    ? <button
+                    {filterList === "Doctor'sPatient" ?
+                        filteredPatientData.map((user, index) => (
+                            <tr key={index}>
+                                <td>{user.id || ''}</td>
+                                <td>{user.first_name || ''}</td>
+                                <td>{user.last_name || ''}</td>
+                                <td>{user.age || ''}</td>
+                                <td>{user.parkinson_status || 'private'}</td>
+                                <td>Dr. {user.physicianName || ''}</td>
+                                <td>
+                                    <button
                                         type="button"
                                         className="btn btn-primary"
                                         onClick={() => handleViewPatient(user.id)}
                                     >
                                         View Patient
                                     </button>
+                                </td>
+                            </tr>
+                        )) :
+                        filteredPatientData.map((user, index) => (
+                            <tr key={index}>
+                                <td>{user.id || ''}</td>
+                                <td>{user.first_name || ''}</td>
+                                <td>{user.last_name || ''}</td>
+                                <td>{user.age || ''}</td>
+                                <td>{user.isPhysician ? user.parkinson_status : 'private'}</td>
+                                <td>Dr. {user.physicianName || ''}</td>
+                                <td>
+                                    {user.isPhysician
+                                        ? <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={() => handleViewPatient(user.id)}
+                                        >
+                                            View Patient
+                                        </button>
 
-                                    : <button
-                                        type="button"
-                                        className="btn btn-secondary"
-                                    >
-                                        Private
-                                    </button>}
-                            </td>
-                        </tr>
-                    ))}
+                                        : <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                        >
+                                            Private
+                                        </button>}
+                                </td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </MDBContainer>
+
+
     );
 }
 

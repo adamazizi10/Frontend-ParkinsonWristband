@@ -24,7 +24,7 @@ function PatientDetails({ Data, patientData }) {
             </div>
             <div>
                 <h2 style={{ textAlign: 'center', color: 'white' }}>Tremor Results</h2>
-                <table className="table-scroll small-first-col">
+                <table className="table-scroll-profile small-first-col">
                     <thead>
                         <tr>
                             <th>T</th>
