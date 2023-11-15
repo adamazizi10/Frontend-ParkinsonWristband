@@ -1,16 +1,16 @@
 import React from 'react';
 import './PatientDetails.css';
 
-function PatientDetails({ Data, patientData }) {
-    
+function PatientDetails({ dataOfPatient }) {
+
     const dataRows = [];
     for (let i = 0; i < 10; i++) {
         dataRows.push(
             <tr key={i}>
-                <td>{Data.t[i]}</td>
-                <td>{Data.x[i]}</td>
-                <td>{Data.y[i]}</td>
-                <td>{Data.z[i]}</td>
+                <td>{dataOfPatient.t[i]}</td>
+                <td>{dataOfPatient.x[i]}</td>
+                <td>{dataOfPatient.y[i]}</td>
+                <td>{dataOfPatient.z[i]}</td>
             </tr>
         );
     }
@@ -19,8 +19,8 @@ function PatientDetails({ Data, patientData }) {
         <div className="container">
             <div style={{ color: 'white' }}>
                 <h1 style={{ textAlign: 'center' }}>Patient Details</h1><hr />
-                <h4 style={{ textAlign: 'center' }}>Name:&nbsp; {patientData.first_name} {patientData.last_name}</h4>
-                <h4 style={{ textAlign: 'center' }}>Parkinson's Status: {patientData.parkinson_status}</h4><hr /><br />
+                <h4 style={{ textAlign: 'center' }}>Name:&nbsp; {dataOfPatient.first_name} {dataOfPatient.last_name}</h4>
+                <h4 style={{ textAlign: 'center' }}>Parkinson's Status: {dataOfPatient.parkinson_status}</h4><hr />
             </div>
             <div>
                 <h2 style={{ textAlign: 'center', color: 'white' }}>Tremor Results</h2>
@@ -34,7 +34,9 @@ function PatientDetails({ Data, patientData }) {
                         </tr>
                     </thead>
                     <tbody className="body-half-screen">
-                        {dataRows}
+                        {dataOfPatient.parkinson_status === "Not Detected"
+                            ? <h3 style={{marginTop: '10px'}}>No Data</h3>
+                            : dataRows}
                     </tbody>
                 </table>
             </div>

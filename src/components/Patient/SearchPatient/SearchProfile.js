@@ -141,7 +141,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
                                 <td>{user.first_name || ''}</td>
                                 <td>{user.last_name || ''}</td>
                                 <td>{user.age || ''}</td>
-                                <td>{user.parkinson_status || 'private'}</td>
+                                <td>{user.parkinson_status}</td>
                                 <td>Dr. {user.physicianName || ''}</td>
                                 <td>
                                     <button

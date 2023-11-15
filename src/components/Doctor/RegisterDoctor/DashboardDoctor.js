@@ -34,41 +34,41 @@ function DashboardDoctor({ doctorData, changeState }) {
                 </h1>
                 <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <div style={{ width: '18rem', margin: '10px' }}>
-                        <div style={{ height: '28rem' }} class="card">
+                        <div style={{ height: '28rem' }} className="card">
                             <FaUserPlus style={{ marginLeft: '20px', width: '250px', height: '300px', color: "#228BE6" }} />
-                            <div class="card-body">
-                                <h5 class="card-title">Add Patient</h5>
-                                <p class="card-text">Add Patient by first name, last name, and age. Start Detection and Analyze Tremor Results.</p>
-                                <button onClick={() => changeState('addPatient')} class="btn btn-primary">Add Patient</button>                        </div>
+                            <div className="card-body">
+                                <h5 className="card-title">Add Patient</h5>
+                                <p className="card-text">Add Patient by first name, last name, and age. Start Detection and Analyze Tremor Results.</p>
+                                <button onClick={() => changeState('addPatient')} className="btn btn-primary">Add Patient</button>                        </div>
                         </div>
                     </div>
                     <div style={{ width: '18rem', margin: '10px' }}>
-                        <div style={{ height: '28rem' }} class="card">
+                        <div style={{ height: '28rem' }} className="card">
                             <FaSearch style={{ marginLeft: '40px', marginTop: '10px', width: '200px', height: '250px', color: "#228BE6" }} />
-                            <div class="card-body">
-                                <h5 class="card-title">Search Patient</h5>
-                                <p class="card-text">You can search exisiting patients to view their Parkinson's Status and Tremor Results.</p>
-                                <button onClick={() => changeState('searchPatient')} class="btn btn-primary">Search Patient</button>
+                            <div className="card-body">
+                                <h5 className="card-title">Search Patient</h5>
+                                <p className="card-text">You can search exisiting patients to view their Parkinson's Status and Tremor Results.</p>
+                                <button onClick={() => changeState('searchPatient')} className="btn btn-primary">Search Patient</button>
                             </div>
                         </div>
                     </div>
                     <div style={{ width: '18rem', margin: '10px' }}>
-                        <div style={{ height: '28rem' }} class="card">
+                        <div style={{ height: '28rem' }} className="card">
                             <FaUserPlus style={{ marginLeft: '20px', width: '250px', height: '300px', color: "#228BE6" }} />
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <button class="btn btn-primary">Go somewhere</button>
+                            <div className="card-body">
+                                <h5 className="card-title">Placeholder</h5>
+                                <p className="card-text">This is a Placeholder that will be used in the future for any new pages if needed.</p>
+                                <button className="btn btn-primary">Placeholder</button>
                             </div>
                         </div>
                     </div>
                     <div style={{ width: '18rem', margin: '10px' }}>
-                        <div style={{ height: '28rem' }} class="card">
+                        <div style={{ height: '28rem' }} className="card">
                             <FaSignOutAlt style={{ marginLeft: '40px', width: '220px', height: '300px', color: "#228BE6" }} />
-                            <div class="card-body">
-                                <h5 class="card-title">Logout</h5>
-                                <p class="card-text">You can Logout safely and other physicians will not be able to view your patients' confidential details.</p>
-                                <button onClick={() => changeState('signinDoctor')} class="btn btn-primary">Logout</button>                        </div>
+                            <div className="card-body">
+                                <h5 className="card-title">Logout</h5>
+                                <p className="card-text">You can Logout safely and other physicians will not be able to view your patients' confidential details.</p>
+                                <button onClick={() => changeState('signinDoctor')} className="btn btn-primary">Logout</button>                        </div>
                         </div>
                     </div>
                 </div>

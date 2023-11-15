@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } from 'mdb-react-ui-kit';
+import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBInput } from 'mdb-react-ui-kit';
 import './AddPatient.css'
 import { Typewriter } from 'react-simple-typewriter'
 import { motion } from "framer-motion";
@@ -15,11 +15,11 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
     const onLastNameChange = (event) => setLastName(event.target.value);
     const onAgeChange = (event) => setAge(event.target.value);
 
-    function randomParkinsonStatus() {
-        const letters = ['none', 'low', 'moderate', 'high'];
-        const randomIndex = Math.floor(Math.random() * letters.length);
-        return letters[randomIndex];
-    }
+    // function randomParkinsonStatus() {
+    //     const letters = ['none', 'low', 'moderate', 'high'];
+    //     const randomIndex = Math.floor(Math.random() * letters.length);
+    //     return letters[randomIndex];
+    // }
 
     const onRegisterClick = (event) => {
         event.preventDefault();
@@ -42,7 +42,7 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
                 first_name: firstName,
                 last_name: lastName,
                 age: age,
-                parkinson_status: randomParkinsonStatus(),
+                // parkinson_status: randomParkinsonStatus(),
                 doctor_id: doctorData.id // Replace 'doctorId' with the actual variable that holds the doctor's ID
             })
         })
