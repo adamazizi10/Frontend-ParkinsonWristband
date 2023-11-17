@@ -133,7 +133,7 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
         <PatientDetails dataOfPatient={dataOfPatient} />
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'white' }}>
           <button type="button" style={{ marginBottom: '10px', marginRight: '10px' }} className="btn btn-primary" onClick={() => handleFetchMicrocontrollerData()}>
-            {dataOfPatient.parkinson_status === "Not Detected" ? "Start Detecting" : "Redetect"}
+            {dataOfPatient.parkinson_status === "Not Detected" ? "Start Detection" : "Redetect"}
           </button>
           <button type="button" style={{ marginBottom: '10px' }} className="btn btn-primary" onClick={() => changeState('dashboardDoctor')}>
             Dashboard
