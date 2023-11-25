@@ -4,6 +4,8 @@ import '../../Patient/AddPatient/AddPatient.css';
 import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
 
+const REACT_APP_REGISTER_DOCTOR = process.env.REACT_APP_REGISTER_DOCTOR;
+
 function RegisterDoctor({ onDoctorDataRecieved, changeState }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -32,7 +34,7 @@ function RegisterDoctor({ onDoctorDataRecieved, changeState }) {
         }
 
         // Inside onRegisterClick function
-        fetch('http://localhost:3001/registerDoctor', {
+        fetch(REACT_APP_REGISTER_DOCTOR, {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({

@@ -4,6 +4,7 @@ import './AddPatient.css'
 import { Typewriter } from 'react-simple-typewriter'
 import { motion } from "framer-motion";
 
+const REACT_APP_ADD_PATIENT = process.env.REACT_APP_ADD_PATIENT;
 
 function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
     const [firstName, setFirstName] = useState('');
@@ -35,7 +36,7 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
         }
 
         // Pass the doctor's ID received from onDoctorDataReceived
-        fetch('http://localhost:3001/add-patient', {
+        fetch(REACT_APP_ADD_PATIENT, {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({

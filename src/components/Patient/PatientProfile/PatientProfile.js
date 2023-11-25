@@ -4,6 +4,9 @@ import '../../../App.css';
 import PatientDetails from './PatientDetails';
 import { MDBContainer } from 'mdb-react-ui-kit';
 
+const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
+const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = process.env.REACT_APP_EXTRACT_MICROCONTROLLER_DATA;
+
 function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   const [dataFetched, setDataFetched] = useState(false);
   const [resetPlot, setResetPlot] = useState(false);
@@ -30,7 +33,7 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   });
 
   const handleViewPatient = () => {
-    fetch(`http://localhost:3001/get-specific-patient-details/${dataOfPatient.id}`)
+    fetch(`${REACT_APP_GET_SPECIFIC_PATIENT_DETAILS}${dataOfPatient.id}`)
       .then((response) => response.json())
       .then((data) => {
         onPatientDataRecieved(data);
@@ -39,7 +42,7 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   };
 
   const handleFetchMicrocontrollerData = () => {
-    fetch(`http://localhost:3001/extract-microcontroller-data/${dataOfPatient.id}`)
+    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${dataOfPatient.id}`)
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData) {

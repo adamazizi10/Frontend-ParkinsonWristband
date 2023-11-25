@@ -4,6 +4,8 @@ import '../../Patient/AddPatient/AddPatient.css';
 import { Typewriter } from 'react-simple-typewriter'
 import { motion } from 'framer-motion';
 
+const REACT_APP_SIGNIN_DOCTOR = process.env.REACT_APP_SIGNIN_DOCTOR;
+
 function SignInDoctor({ onDoctorDataRecieved, changeState }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,7 +24,7 @@ function SignInDoctor({ onDoctorDataRecieved, changeState }) {
         }
 
         // Inside onSignInClick function
-        fetch('http://localhost:3001/signinDoctor', {
+        fetch(REACT_APP_SIGNIN_DOCTOR, {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({

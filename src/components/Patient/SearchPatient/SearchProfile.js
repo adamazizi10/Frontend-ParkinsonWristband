@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../PatientProfile/PatientDetails.css';
 import { MDBContainer } from 'mdb-react-ui-kit';
 
+const REACT_APP_GET_ALL_PATIENT_DATA = process.env.REACT_APP_GET_ALL_PATIENT_DATA;
+const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
+const REACT_APP_GET_ALL_DOCTOR_DATA = process.env.REACT_APP_GET_ALL_DOCTOR_DATA;
+
 function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData }) {
     const [patientData, setPatientData] = useState([]);
     const [doctorData, setDoctorData] = useState([]);
@@ -9,7 +13,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
     const [filterList, setFilterList] = useState('All');
 
     useEffect(() => {
-        fetch('http://localhost:3001/get-all-patient-data')
+        fetch(REACT_APP_GET_ALL_PATIENT_DATA)
             .then((response) => response.json())
             .then((data) => {
                 setPatientData(data);
@@ -18,7 +22,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3001/get-all-doctor-data')
+        fetch(REACT_APP_GET_ALL_DOCTOR_DATA)
             .then((response) => response.json())
             .then((data) => {
                 setDoctorData(data);
@@ -37,7 +41,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
     };
 
     const handleViewPatient = (patientId) => {
-        fetch(`http://localhost:3001/get-specific-patient-details/${patientId}`)
+        fetch(`${REACT_APP_GET_SPECIFIC_PATIENT_DETAILS}${patientId}`)
             .then((response) => response.json())
             .then((data) => {
                 onPatientDataRecieved(data);
