@@ -30,3 +30,4 @@ an account system was created for healthcare professionals, assigning each docto
 <img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/a6d3a2ca-f79f-4a30-8d55-895554596ddc">
 
 
+# End of User Guide
