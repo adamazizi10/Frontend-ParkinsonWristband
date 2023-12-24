@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+# Frontend of Parkinson Disease Detection Wristband
+## Details
+* A Parkinson's Disease Simulation and detection wristband was engineered by utilizing motors on two rails controlled by
+an ESP32 microcontroller and MPU6050 motion-tracker to retrieve accelerometer data
+* The K-Nearest Neighbours Machine Learning algorithm was implemented to assess Parkinson's severity from the data and
+categorizing it as None, Low, Medium, or High
+* The GUI was developed using React.js and Node.js for interaction and 3D visualization of Parkinson's detection results, and
+an account system was created for healthcare professionals, assigning each doctor a dashboard for patient profile management
+* The backend is in a different repository
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+## Snapshots
+## Register Page
+<img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/c71d5719-6a1c-4bb9-a356-37e5c42fbad9">
 
-### `npm start`
+## Login Page
+<img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/b468b821-98a9-4485-ba31-dc1240a5c702">
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Doctor Dashboard
+<img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/6a416714-d8e6-4637-8d65-8463b323522a">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Add Patient Page
+<img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/8c0dd5f8-c4a5-4842-94dc-cb776ce9ff24">
 
-### `npm test`
+## Search Patient Page
+<img width="1497" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/40b06295-7d27-4350-a7ba-9643119650db">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Patient Profile Page
+<img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/a6d3a2ca-f79f-4a30-8d55-895554596ddc">
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
