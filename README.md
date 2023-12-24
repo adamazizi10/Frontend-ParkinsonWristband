@@ -10,7 +10,7 @@ an account system was created for healthcare professionals, assigning each docto
 
 
 
-## Snapshots
+# Snapshots
 ## Register Page
 <img width="1512" alt="image" src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/c71d5719-6a1c-4bb9-a356-37e5c42fbad9">
 
