@@ -6,7 +6,7 @@ an ESP32 microcontroller and MPU6050 motion-tracker to retrieve accelerometer da
 categorizing it as None, Low, Medium, or High
 * The GUI was developed using React.js and Node.js for interaction and 3D visualization of Parkinson's detection results, and
 an account system was created for healthcare professionals, assigning each doctor a dashboard for patient profile management
-* The backend is in a different repository
+* The backend is in a different repository: https://github.com/adamazizi10/Backend-ParkinsonWristband
 
 
 
