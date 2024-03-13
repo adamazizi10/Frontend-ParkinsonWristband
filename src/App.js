@@ -26,7 +26,6 @@ function App() {
     <>
       {currentState === 'addPatient' && <AddPatient doctorData={doctorData} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState} />}
       {currentState === 'patientProfile' && <PatientProfile patientData={patientData} changeState={changeState} onPatientDataRecieved={onPatientDataRecieved}/>}
-      {console.log(patientData)}
       {currentState === 'searchPatient' && <SearchPatient SignedInDoctorData={doctorData} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState}/>}
       {currentState === 'registerDoctor' && <RegisterDoctor onDoctorDataRecieved={onDoctorDataRecieved} changeState={changeState}/>}
       {currentState === 'signinDoctor' && <SignInDoctor onDoctorDataRecieved={onDoctorDataRecieved} changeState={changeState}/>}

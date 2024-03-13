@@ -7,7 +7,7 @@ import { MDBContainer } from 'mdb-react-ui-kit';
 const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
 const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = process.env.REACT_APP_EXTRACT_MICROCONTROLLER_DATA;
 
-function PatientProfile({ patientData, changeState, onPatientDataReceived }) {
+function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   const [dataFetched, setDataFetched] = useState(false);
   const [fetchingPaused, setFetchingPaused] = useState(true); // Initially paused
   const [allPlotData, setAllPlotData] = useState({
@@ -33,6 +33,8 @@ function PatientProfile({ patientData, changeState, onPatientDataReceived }) {
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData) {
+          console.log(`The response data is x: ${responseData.x}`)
+          console.log(`The response data is: ${responseData}`)
           // Set the current batch to be plotted one by one
           setCurrentBatch({
             x: responseData.x,
@@ -41,6 +43,7 @@ function PatientProfile({ patientData, changeState, onPatientDataReceived }) {
           });
           setBatchIndex(0); // Reset batch index to start plotting new data from start
           setDataFetched(true);
+          onPatientDataRecieved(responseData)
         }
       })
       .catch((error) => {
@@ -59,7 +62,7 @@ function PatientProfile({ patientData, changeState, onPatientDataReceived }) {
           z: [...prevData.z, currentBatch.z[batchIndex]],
         }));
         setBatchIndex(batchIndex + 1);
-      }, 1000); // Adjust this delay to control how fast points are plotted
+      }, 850); // Adjust this delay to control how fast points are plotted
     }
 
     return () => clearTimeout(timer);
@@ -69,7 +72,7 @@ function PatientProfile({ patientData, changeState, onPatientDataReceived }) {
     if (!fetchingPaused) {
       const timer = setInterval(() => {
         handleFetchMicrocontrollerData();
-      }, 6000); // Adjust timing as necessary
+      }, 4000); // Adjust timing as necessary
 
       return () => clearInterval(timer);
     }
