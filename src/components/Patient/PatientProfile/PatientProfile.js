@@ -10,6 +10,8 @@ const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = process.env.REACT_APP_EXTRACT_MIC
 function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   const [dataFetched, setDataFetched] = useState(false);
   const [resetPlot, setResetPlot] = useState(false);
+  const [fetchingInterval, setFetchingInterval] = useState(null);
+  const [fetchingPaused, setFetchingPaused] = useState(true); // Initially paused
 
   const dataOfPatient = patientData;
   if (!dataOfPatient.x || !dataOfPatient.y || !dataOfPatient.z || !dataOfPatient.t || !dataOfPatient.parkinson_status) {
@@ -18,6 +20,7 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
     patientData.z = [0];
     patientData.t = [0];
     patientData.parkinson_status = "Not Detected";
+    // add extra features here
   }
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,43 +31,94 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   });
 
   const [cameraSettings, setCameraSettings] = useState({
-    up: { x: 0, y: 0, z: 1 },
-    center: { x: 0, y: 0, z: 0 },
+    up: { x: 0, y: 0, z: 1 }, // Z-axis is up
+    center: { x: 0, y: 0, z: 0 }, // Focuses on the center of the plot
+    eye: { x: 1.5, y: -1.5, z: 0.5 } // Adjusts the camera to a side view
   });
+  
+  
+
+  const toggleFetching = () => {
+    setFetchingPaused(prevState => !prevState); // Toggle fetchingPaused state
+  };
 
   const handleViewPatient = () => {
     fetch(`${REACT_APP_GET_SPECIFIC_PATIENT_DETAILS}${dataOfPatient.id}`)
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data)
         onPatientDataRecieved(data);
+
       })
       .catch((error) => console.error('Error fetching patient details:', error));
   };
 
   const handleFetchMicrocontrollerData = () => {
     fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${dataOfPatient.id}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Page not found or cannot be accessed and database empty');
+        }
+        return response.json();
+      })
       .then((responseData) => {
         if (responseData) {
-          handleViewPatient();
+
+          // handleViewPatient();
+          onPatientDataRecieved(responseData);
           setResetPlot(true);
-          setDataFetched(true) // Set the state to reset the plot
+          setDataFetched(true);
         }
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error.message);
       });
-  }
+  };
+
+  const handleStopMicrocontrollerData = () => {
+    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${dataOfPatient.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: 'Stop' }) // Sending the string "Stop" as JSON data
+    })
+    .then(response => {
+      // Handle response here
+      console.log('Request sent:', response);
+    })
+    .catch(error => {
+      // Handle error here
+      console.error('Error sending request:', error);
+    });
+  };
 
   useEffect(() => {
-    if (dataFetched && resetPlot) { // Check if resetPlot is true
-      setCurrentIndex(0); // Reset current index
+    if (!fetchingPaused) {
+      const timer = setInterval(() => {
+        handleFetchMicrocontrollerData();
+      }, 5000); // Fetch every 5 seconds
+  
+      setFetchingInterval(timer);
+  
+      return () => clearInterval(timer);
+    } else {
+      clearInterval(fetchingInterval); // Clear interval if fetching is paused
+      handleStopMicrocontrollerData(); // Call handleStopMicrocontrollerData when fetching is paused
+    }
+  }, [fetchingPaused]);
+  
+  
+
+  useEffect(() => {
+    if (dataFetched && resetPlot) {
+      setCurrentIndex(0);
       setPlotData({
         x: [dataOfPatient.x[0]],
         y: [dataOfPatient.y[0]],
         z: [dataOfPatient.z[0]],
       });
-      setResetPlot(false); // Reset the state to false after resetting the plot
+      setResetPlot(false);
     }
 
     if (dataFetched && !resetPlot) {
@@ -107,9 +161,9 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
     width: 820,
     title: `Tremor Results In 3D`,
     scene: {
-      xaxis: { range: [0, Math.max(...dataOfPatient.x)] },
-      yaxis: { range: [0, Math.max(...dataOfPatient.y)] },
-      zaxis: { range: [0, Math.max(...dataOfPatient.z)] },
+      xaxis: { range: [Math.min(dataOfPatient.x), Math.max(...dataOfPatient.x)] },
+      yaxis: { range: [Math.min(dataOfPatient.y), Math.max(...dataOfPatient.y)] },
+      zaxis: { range: [Math.min(dataOfPatient.z), Math.max(...dataOfPatient.z)] },
       camera: cameraSettings,
     },
   };
@@ -135,8 +189,8 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
       <div style={{ marginLeft: '180px' }}>
         <PatientDetails dataOfPatient={dataOfPatient} />
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'white' }}>
-          <button type="button" style={{ marginBottom: '10px', marginRight: '10px' }} className="btn btn-primary" onClick={() => handleFetchMicrocontrollerData()}>
-            {dataOfPatient.parkinson_status === "Not Detected" ? "Start Detection" : "Redetect"}
+          <button type="button" style={{ marginBottom: '10px', marginRight: '10px' }} className="btn btn-primary" onClick={toggleFetching}>
+            {fetchingPaused ? "Start Detection" : "Pause Detection"}
           </button>
           <button type="button" style={{ marginBottom: '10px' }} className="btn btn-primary" onClick={() => changeState('dashboardDoctor')}>
             Dashboard
@@ -149,3 +203,19 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
 }
 
 export default PatientProfile;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
