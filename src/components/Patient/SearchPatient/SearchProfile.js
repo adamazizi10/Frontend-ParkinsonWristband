@@ -6,7 +6,7 @@ const REACT_APP_GET_ALL_PATIENT_DATA = process.env.REACT_APP_GET_ALL_PATIENT_DAT
 const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
 const REACT_APP_GET_ALL_DOCTOR_DATA = process.env.REACT_APP_GET_ALL_DOCTOR_DATA;
 
-function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData }) {
+function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData, onPatientFirstAndLastNameRecieved, patientFirstAndLastName }) {
     const [patientData, setPatientData] = useState([]);
     const [doctorData, setDoctorData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -45,6 +45,7 @@ function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData 
             .then((response) => response.json())
             .then((data) => {
                 onPatientDataRecieved(data);
+                onPatientFirstAndLastNameRecieved(data)
                 changeState('patientProfile');
             })
             .catch((error) => console.error('Error fetching patient details:', error));

@@ -58,8 +58,9 @@ function RegisterDoctor({ onDoctorDataRecieved, changeState }) {
             });
     }
 
+
     return (
-        <MDBContainer fluid className='p-6 background-radial-gradient overflow-hidden LoginContainer' style={{height: '100vh'}}>
+        <MDBContainer fluid className='p-6 background-radial-gradient overflow-hidden LoginContainer' style={{ height: '100vh' }}>
             <motion.div initial={{ x: 1200, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.9, type: 'spring' }} >
                 <MDBRow>
                     <div style={{ height: '120px' }}></div>
@@ -87,27 +88,29 @@ function RegisterDoctor({ onDoctorDataRecieved, changeState }) {
                                 <h2 style={{ marginBottom: '23px', color: '#51565e' }}>
                                     <b>Physician Register</b>
                                 </h2>
-                                <div style={{ display: 'flex' }}>
-                                    <div style={{ width: '50%', marginRight: '10px' }}>
-                                        <MDBInput onChange={onFirstNameChange} wrapperClass='mb-4' label='First Name' id='form1' type='text' />
+                                <form onSubmit={onRegisterClick}>
+                                    <div style={{ display: 'flex' }}>
+                                        <div style={{ width: '50%', marginRight: '10px' }}>
+                                            <MDBInput onChange={onFirstNameChange} wrapperClass='mb-4' label='First Name' id='form1' type='text' />
+                                        </div>
+                                        <div style={{ width: '50%' }}>
+                                            <MDBInput onChange={onLastNameChange} wrapperClass='mb-4' label='Last Name' id='form2' type='text' />
+                                        </div>
                                     </div>
-                                    <div style={{ width: '50%' }}>
-                                        <MDBInput onChange={onLastNameChange} wrapperClass='mb-4' label='Last Name' id='form2' type='text' />
+                                    <MDBInput onChange={onEmailChange} wrapperClass='mb-4' label='Email' id='form3' type='email' />
+                                    <div style={{ display: 'flex' }}>
+                                        <div style={{ width: '50%', marginRight: '10px' }}>
+                                            <MDBInput onChange={onPasswordChange} wrapperClass='mb-4' label='Password' id='form4' type='password' />
+                                        </div>
+                                        <div style={{ width: '50%' }}>
+                                            <MDBInput onChange={onConfirmPasswordChange} wrapperClass='mb-4' label='Confirm Password' id='form5' type='password' />
+                                        </div>
                                     </div>
-                                </div>
-                                <MDBInput onChange={onEmailChange} wrapperClass='mb-4' label='Email' id='form3' type='email' />
-                                <div style={{ display: 'flex' }}>
-                                    <div style={{ width: '50%', marginRight: '10px' }}>
-                                        <MDBInput onChange={onPasswordChange} wrapperClass='mb-4' label='Password' id='form4' type='password' />
-                                    </div>
-                                    <div style={{ width: '50%' }}>
-                                        <MDBInput onChange={onConfirmPasswordChange} wrapperClass='mb-4' label='Confirm Password' id='form5' type='password' />
-                                    </div>
-                                </div>
-                                {error && <div className="alert alert-danger">{error}</div>}
-                                <MDBBtn onClick={onRegisterClick} className='w-100 mb-4' size='md'>
-                                    Register
-                                </MDBBtn>
+                                    {error && <div className="alert alert-danger">{error}</div>}
+                                    <MDBBtn onClick={onRegisterClick} className='w-100 mb-4' size='md'>
+                                        Register
+                                    </MDBBtn>
+                                </form>
                                 <p>
                                     Already registered?
                                     <button onClick={() => changeState('signinDoctor')} value='searchPatient' style={{ textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>

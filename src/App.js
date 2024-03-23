@@ -9,6 +9,7 @@ import DashboardDoctor from './components/Doctor/RegisterDoctor/DashboardDoctor'
 function App() {
   const [currentState, setCurrentState] = useState('signinDoctor');
   const [patientData, setPatientData] = useState(null);
+  const [patientFirstAndLastName, setPatientFirstAndLastName] = useState(null)
   const [doctorData, setDoctorData] = useState(null)
 
   const changeState = (newState) => {
@@ -18,15 +19,19 @@ function App() {
     setPatientData(data);
   };
 
+  const onPatientFirstAndLastNameRecieved = (data) => {
+    setPatientFirstAndLastName(data);
+  };
+
   const onDoctorDataRecieved = (data) => {
     setDoctorData(data);
   };
   
   return (
     <>
-      {currentState === 'addPatient' && <AddPatient doctorData={doctorData} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState} />}
-      {currentState === 'patientProfile' && <PatientProfile patientData={patientData} changeState={changeState} onPatientDataRecieved={onPatientDataRecieved}/>}
-      {currentState === 'searchPatient' && <SearchPatient SignedInDoctorData={doctorData} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState}/>}
+      {currentState === 'addPatient' && <AddPatient doctorData={doctorData} patientFirstAndLastName={patientFirstAndLastName} onPatientFirstAndLastNameRecieved={onPatientFirstAndLastNameRecieved} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState} />}
+      {currentState === 'patientProfile' && <PatientProfile patientFirstAndLastName={patientFirstAndLastName} onPatientFirstAndLastNameRecieved={onPatientFirstAndLastNameRecieved} patientData={patientData} changeState={changeState} onPatientDataRecieved={onPatientDataRecieved}/>}
+      {currentState === 'searchPatient' && <SearchPatient patientFirstAndLastName={patientFirstAndLastName} onPatientFirstAndLastNameRecieved={onPatientFirstAndLastNameRecieved} SignedInDoctorData={doctorData} onPatientDataRecieved={onPatientDataRecieved} changeState={changeState}/>}
       {currentState === 'registerDoctor' && <RegisterDoctor onDoctorDataRecieved={onDoctorDataRecieved} changeState={changeState}/>}
       {currentState === 'signinDoctor' && <SignInDoctor onDoctorDataRecieved={onDoctorDataRecieved} changeState={changeState}/>}
       {currentState === 'dashboardDoctor' && <DashboardDoctor doctorData={doctorData} changeState={changeState}/>}

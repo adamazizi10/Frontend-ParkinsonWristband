@@ -6,8 +6,12 @@ import { MDBContainer } from 'mdb-react-ui-kit';
 
 const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
 const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = process.env.REACT_APP_EXTRACT_MICROCONTROLLER_DATA;
+const REACT_APP_STORE_LAST_SET_OF_DATA = process.env.REACT_APP_STORE_LAST_SET_OF_DATA;
 
-function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
+function PatientProfile({ patientData, changeState, onPatientDataRecieved, patientFirstAndLastName }) {
+  const fetchController = new AbortController();
+  const { signal } = fetchController; // Destructure the signal for ease of use
+
   const [dataFetched, setDataFetched] = useState(false);
   const [fetchingPaused, setFetchingPaused] = useState(true); // Initially paused
   const [allPlotData, setAllPlotData] = useState({
@@ -29,12 +33,11 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
   };
 
   const handleFetchMicrocontrollerData = () => {
-    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${patientData.id}`)
+    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${patientData.id}`, { signal })
       .then((response) => response.json())
       .then((responseData) => {
-        if (responseData) {
-          console.log(`The response data is x: ${responseData.x}`)
-          console.log(`The response data is: ${responseData}`)
+        if (responseData && responseData.x !== undefined) {
+          console.log(`The response data is: ${JSON.stringify(responseData)}`);
           // Set the current batch to be plotted one by one
           setCurrentBatch({
             x: responseData.x,
@@ -44,12 +47,44 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
           setBatchIndex(0); // Reset batch index to start plotting new data from start
           setDataFetched(true);
           onPatientDataRecieved(responseData)
+        } else {
+          console.log('No data or undefined Data')
+          console.log(`The response data is: ${JSON.stringify(responseData)}`);
         }
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error('Error fetching data:', error);
+        }
       });
   };
+
+  const handleStoreLastSetOfDataDueToPauseDetection = () => {
+    console.log(`patient id is: ${patientFirstAndLastName.id}`)
+    fetch(`${REACT_APP_STORE_LAST_SET_OF_DATA}${patientFirstAndLastName.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(patientData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data sent successfully:', data);
+        // Handle response if needed
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        // Handle error if needed
+      });
+  }
 
   useEffect(() => {
     let timer;
@@ -62,9 +97,12 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
           z: [...prevData.z, currentBatch.z[batchIndex]],
         }));
         setBatchIndex(batchIndex + 1);
-      }, 850); // Adjust this delay to control how fast points are plotted
+      }, 595); // delay to control how fast points are plotted
     }
 
+    //good ones
+    // 395 2000
+    //595 3000
     return () => clearTimeout(timer);
   }, [fetchingPaused, dataFetched, batchIndex, currentBatch]);
 
@@ -72,11 +110,19 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
     if (!fetchingPaused) {
       const timer = setInterval(() => {
         handleFetchMicrocontrollerData();
-      }, 4000); // Adjust timing as necessary
+        console.log('called')
+      }, 3000); // Delay of receiving data
 
-      return () => clearInterval(timer);
+      return () => {
+        clearInterval(timer);
+        fetchController.abort(); // Abort ongoing fetch requests  
+      };
+    } else {
+      // fetchController.abort(); // Abort ongoing fetch requests
+      handleStoreLastSetOfDataDueToPauseDetection();
     }
   }, [fetchingPaused]);
+
 
   const lineTrace = {
     x: allPlotData.x,
@@ -96,18 +142,46 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
     },
   };
 
+  //layout for still data
+  // const layout = {
+  //   height: 860,
+  //   width: 820,
+  //   title: `Tremor Results In 3D`,
+  //   scene: {
+  //     xaxis: { 
+  //       range: [-1, 1],
+  //       tickvals: [-1, -0.8, -.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]
+  //      },
+  //     yaxis: { 
+  //       range: [-1, 1],
+  //       tickvals: [-1, -0.8, -.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]
+  //      },
+  //     zaxis: { 
+  //       range: [8, 10],
+  //       tickvals: [8, 8.2, 8.4, 8.6, 8.8, 9, 9.2, 9.4, 9.6, 9.8, 10]
+  //      },
+  //     camera: cameraSettings,
+  //   },
+  // };
+
+  //layout for max min data
   const layout = {
     height: 860,
     width: 820,
     title: `Tremor Results In 3D`,
     scene: {
-      xaxis: { range: [Math.min(...allPlotData.x), Math.max(...allPlotData.x)] },
-      yaxis: { range: [Math.min(...allPlotData.y), Math.max(...allPlotData.y)] },
-      zaxis: { range: [Math.min(...allPlotData.z), Math.max(...allPlotData.z)] },
+      xaxis: {
+        range: [Math.min(...allPlotData.x), Math.max(...allPlotData.x)],
+      },
+      yaxis: {
+        range: [Math.min(...allPlotData.y), Math.max(...allPlotData.y)]
+      },
+      zaxis: {
+        range: [Math.min(...allPlotData.z), Math.max(...allPlotData.z)]
+      },
       camera: cameraSettings,
     },
   };
-
   return (
     <MDBContainer
       style={{ display: 'flex', padding: '0', height: '100vh' }}
@@ -126,7 +200,7 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved }) {
         />
       </div>
       <div style={{ marginLeft: '180px' }}>
-        <PatientDetails dataOfPatient={patientData} />
+        <PatientDetails dataOfPatient={patientData} patientFirstAndLastName={patientFirstAndLastName} />
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'white' }}>
           <button type="button" className="btn btn-primary" onClick={toggleFetching} style={{ marginBottom: '10px', marginRight: '10px' }}>
             {fetchingPaused ? "Start Detection" : "Pause Detection"}

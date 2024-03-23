@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const REACT_APP_ADD_PATIENT = process.env.REACT_APP_ADD_PATIENT;
 
-function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
+function AddPatient({ onPatientDataRecieved, changeState, doctorData, onPatientFirstAndLastNameRecieved, patientFirstAndLastName }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [age, setAge] = useState('');
@@ -51,6 +51,7 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
             .then((data) => {
                 if (data.first_name) {
                     onPatientDataRecieved(data);
+                    onPatientFirstAndLastNameRecieved(data)
                     changeState('patientProfile');
                 } else {
                     setError('Patient Already Exists, Please Try Again');
@@ -76,11 +77,14 @@ function AddPatient({ onPatientDataRecieved, changeState, doctorData }) {
                                     typeSpeed={40}
                                     deleteSpeed={20}
                                     delaySpeed={2000} /></h2>
-                            <MDBInput onChange={onFirstNameChange} wrapperClass='mb-4' label='First Name' id='form1' type='text' />
-                            <MDBInput onChange={onLastNameChange} wrapperClass='mb-4' label='Last Name' id='form2' type='text' />
-                            <MDBInput onChange={onAgeChange} wrapperClass='mb-4' label='Age' id='form3' type='text' />
-                            {error && <div className="alert alert-danger">{error}</div>}
-                            <MDBBtn onClick={onRegisterClick} className='w-100' size='md'>Add Patient</MDBBtn>
+                            <form onSubmit={onRegisterClick}>
+                                <MDBInput onChange={onFirstNameChange} wrapperClass='mb-4' label='First Name' id='form1' type='text' />
+                                <MDBInput onChange={onLastNameChange} wrapperClass='mb-4' label='Last Name' id='form2' type='text' />
+                                <MDBInput onChange={onAgeChange} wrapperClass='mb-4' label='Age' id='form3' type='text' />
+                                {error && <div className="alert alert-danger">{error}</div>}
+                                <MDBBtn onClick={onRegisterClick} className='w-100' size='md'>Add Patient</MDBBtn>
+                            </form>
+
                             <p>or go to
                                 <button onClick={() => changeState('dashboardDoctor')} value='searchPatient' style={{ marginTop: '20px', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>Dashboard</button>
                             </p>

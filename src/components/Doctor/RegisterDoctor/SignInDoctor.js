@@ -17,7 +17,6 @@ function SignInDoctor({ onDoctorDataRecieved, changeState }) {
     // In SignInDoctor component
     const onSignInClick = (event) => {
         event.preventDefault();
-
         if (!email || !password) {
             setError('Please fill in both email and password fields.');
             return;
@@ -51,10 +50,12 @@ function SignInDoctor({ onDoctorDataRecieved, changeState }) {
             .catch((error) => {
                 setError('An error occurred while signing in.');
             });
+
     }
 
     return (
-        <MDBContainer fluid className='p-6 background-radial-gradient overflow-hidden LoginContainer' style={{height: '100vh'}}>
+
+        <MDBContainer fluid className='p-6 background-radial-gradient overflow-hidden LoginContainer' style={{ height: '100vh' }}>
             <motion.div initial={{ x: 1200, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.9, type: 'spring' }} >
                 <MDBRow>
                     <div style={{ height: '120px' }}></div>
@@ -82,12 +83,15 @@ function SignInDoctor({ onDoctorDataRecieved, changeState }) {
                                 <h2 style={{ marginBottom: '23px', color: '#51565e' }}>
                                     <b>Physician Sign In</b>
                                 </h2>
-                                <MDBInput onChange={onEmailChange} wrapperClass='mb-4' label='Email' id='form3' type='email' />
-                                <MDBInput onChange={onPasswordChange} wrapperClass='mb-4' label='Password' id='form4' type='password' />
-                                {error && <div className="alert alert-danger">{error}</div>}
-                                <MDBBtn onClick={onSignInClick} className='w-100 mb-4' size='md'>
-                                    Sign In
-                                </MDBBtn>
+                                <form onSubmit={onSignInClick}>
+
+                                    <MDBInput onChange={onEmailChange} wrapperClass='mb-4' label='Email' id='form3' type='email' />
+                                    <MDBInput onChange={onPasswordChange} wrapperClass='mb-4' label='Password' id='form4' type='password' />
+                                    {error && <div className="alert alert-danger">{error}</div>}
+                                    <MDBBtn onClick={onSignInClick} className='w-100 mb-4' size='md'>
+                                        Sign In
+                                    </MDBBtn>
+                                </form>
                                 <p>
                                     New here?
                                     <button onClick={() => changeState('registerDoctor')} style={{ textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}>
