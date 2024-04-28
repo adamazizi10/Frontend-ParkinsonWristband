@@ -2,19 +2,27 @@ import React from 'react';
 import './PatientDetails.css';
 
 function getStatusLabel(status) {
-    switch (status) {
-        case "Level 0":
+    console.log(`status is: ${status}`);
+    // console.log(`type of status is: ${typeof status}`); // "string"
+    switch (status.toString()) {
+        case "0":
+        case '{"0"}':
             return "No Parkinson";
-        case "Level 1":
+        case "1":
+        case '{"1"}':
             return "Low";
-        case "Level 2":
+        case "2":
+        case '{"2"}':
             return "Medium";
-        case "Level 3":
+        case "3":
+        case '{"3"}':
             return "High";
         default:
             return status; // Return the status itself if it doesn't match any of the cases
     }
 }
+
+
 
 const getStatusColor = (statusLabel) => {
     switch (statusLabel) {

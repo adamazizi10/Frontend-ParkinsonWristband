@@ -12,8 +12,6 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
   const fetchController = new AbortController();
   const { signal } = fetchController; // Destructure the signal for ease of use
 
-  const [startDetection, setStartDetection] = useState()
-  const [stopDetection, setStopDetection] = useState()
   const [dataFetched, setDataFetched] = useState(false);
   const [fetchingPaused, setFetchingPaused] = useState(true); // Initially paused
   const [allPlotData, setAllPlotData] = useState({
@@ -21,7 +19,9 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
     y: patientData.y || [],
     z: patientData.z || [],
   });
+  const [overlapData, setOverlapData] = useState({ t: [], x: [], y: [], z: [] });
   const [currentBatch, setCurrentBatch] = useState({ x: [], y: [], z: [] });
+  const [overlap_x, setOverlap_x] = useState([])
   const [batchIndex, setBatchIndex] = useState(0);
 
   const [cameraSettings, setCameraSettings] = useState({
@@ -35,7 +35,19 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
   };
 
   const handleFetchMicrocontrollerData = () => {
-    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${patientData.id}`, { signal })
+    fetch(`${REACT_APP_EXTRACT_MICROCONTROLLER_DATA}${patientData.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        overlapData_x: overlapData.x,
+        overlapData_y: overlapData.y,
+        overlapData_z: overlapData.z,
+        overlapData_t: overlapData.t
+      }),
+      signal: signal
+    })
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData && responseData.x !== undefined) {
@@ -44,19 +56,19 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
           setCurrentBatch({
             x: responseData.x,
             y: responseData.y,
+            z: responseData.z,
+          });
+          setOverlapData({
+            t: responseData.t,
+            x: responseData.x,
+            y: responseData.y,
             z: responseData.z
           });
           setBatchIndex(0); // Reset batch index to start plotting new data from start
           setDataFetched(true);
           onPatientDataRecieved(responseData)
-          console.log(`fetchingpaused state is: ${fetchingPaused}`)
-          if (!fetchingPaused) {
-            // If fetching is not paused, continue fetching recursively
-            handleFetchMicrocontrollerData();
-          }
         } else {
-          console.log('No data or undefined Data, recalling handleFetchMicrocontrollerData();')
-          handleFetchMicrocontrollerData();
+          console.log('No data or undefined Data')
           console.log(`The response data is: ${JSON.stringify(responseData)}`);
         }
       })
@@ -112,24 +124,24 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
     // 395 2000
     //595 3000
     return () => clearTimeout(timer);
-  }, [fetchingPaused, dataFetched, batchIndex, currentBatch]);
+  }, [fetchingPaused, dataFetched, batchIndex, currentBatch, overlapData]);
 
   useEffect(() => {
     if (!fetchingPaused) {
-      handleFetchMicrocontrollerData();
+      const timer = setInterval(() => {
+        handleFetchMicrocontrollerData();
+        console.log('called')
+      }, 10000); // Delay of receiving data
+
+      return () => {
+        clearInterval(timer);
+        fetchController.abort(); // Abort ongoing fetch requests  
+      };
     } else {
+      // fetchController.abort(); // Abort ongoing fetch requests
       handleStoreLastSetOfDataDueToPauseDetection();
-      // Abort fetching if component unmounts or fetching is paused
-      fetchController.abort();
     }
-    return () => {
-      if (fetchingPaused || signal) {
-        // Abort fetching if component unmounts or fetching is paused
-        fetchController.abort();
-      }
-    };
   }, [fetchingPaused]);
-  
 
 
   const lineTrace = {
@@ -150,27 +162,29 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
     },
   };
 
-  //layout for still data
+  //layout for data
   // const layout = {
   //   height: 860,
   //   width: 820,
   //   title: `Tremor Results In 3D`,
   //   scene: {
-  //     xaxis: { 
-  //       range: [-1, 1],
-  //       tickvals: [-1, -0.8, -.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]
-  //      },
-  //     yaxis: { 
-  //       range: [-1, 1],
-  //       tickvals: [-1, -0.8, -.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]
-  //      },
-  //     zaxis: { 
-  //       range: [8, 10],
-  //       tickvals: [8, 8.2, 8.4, 8.6, 8.8, 9, 9.2, 9.4, 9.6, 9.8, 10]
-  //      },
+  //     xaxis: {
+  //       range: [-2, 2],
+  //       tickvals: [-2, -1.8, -1.6, -1.4, -1.2, -1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
+  //     },
+  //     yaxis: {
+  //       range: [-2, 2],
+  //       tickvals: [-2, -1.8, -1.6, -1.4, -1.2, -1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
+  //     },
+  //     zaxis: {
+  //       range: [8, 11],
+  //       tickvals: [8, 8.15, 8.3, 8.45, 8.6, 8.75, 8.9, 9.05, 9.2, 9.35, 9.5, 9.65, 9.8, 9.95, 10.1, 10.25, 10.4, 10.55, 10.7, 10.85, 11]
+  //     },
   //     camera: cameraSettings,
   //   },
   // };
+
+
 
   //layout for max min data
   const layout = {
@@ -190,8 +204,6 @@ function PatientProfile({ patientData, changeState, onPatientDataRecieved, patie
       camera: cameraSettings,
     },
   };
-
-
   return (
     <MDBContainer
       style={{ display: 'flex', padding: '0', height: '100vh' }}
