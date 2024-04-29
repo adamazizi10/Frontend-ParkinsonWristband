@@ -4,7 +4,7 @@ import './AddPatient.css'
 import { Typewriter } from 'react-simple-typewriter'
 import { motion } from "framer-motion";
 
-const REACT_APP_ADD_PATIENT = process.env.REACT_APP_ADD_PATIENT;
+const REACT_APP_ADD_PATIENT = `${process.env.REACT_APP_API_BASE_URL}/add-patient`
 
 function AddPatient({ onPatientDataRecieved, changeState, doctorData, onPatientFirstAndLastNameRecieved, patientFirstAndLastName }) {
     const [firstName, setFirstName] = useState('');

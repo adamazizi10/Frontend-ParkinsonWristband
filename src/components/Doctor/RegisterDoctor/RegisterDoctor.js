@@ -4,7 +4,7 @@ import '../../Patient/AddPatient/AddPatient.css';
 import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
 
-const REACT_APP_REGISTER_DOCTOR = process.env.REACT_APP_REGISTER_DOCTOR;
+const REACT_APP_REGISTER_DOCTOR = `${process.env.REACT_APP_API_BASE_URL}/registerDoctor`;
 
 function RegisterDoctor({ onDoctorDataRecieved, changeState }) {
     const [firstName, setFirstName] = useState('');

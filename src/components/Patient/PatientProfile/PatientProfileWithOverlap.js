@@ -4,9 +4,9 @@ import '../../../App.css';
 import PatientDetails from './PatientDetails';
 import { MDBContainer } from 'mdb-react-ui-kit';
 
-const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
-const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = process.env.REACT_APP_EXTRACT_MICROCONTROLLER_DATA;
-const REACT_APP_STORE_LAST_SET_OF_DATA = process.env.REACT_APP_STORE_LAST_SET_OF_DATA;
+const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = `${process.env.REACT_APP_API_BASE_URL}/get-specific-patient-details/`;
+const REACT_APP_EXTRACT_MICROCONTROLLER_DATA = `${process.env.REACT_APP_API_BASE_URL}/extract-microcontroller-data/`;
+const REACT_APP_STORE_LAST_SET_OF_DATA = `${process.env.REACT_APP_API_BASE_URL}/store-last-set-of-data/`;
 
 function PatientProfile({ patientData, changeState, onPatientDataRecieved, patientFirstAndLastName }) {
   const fetchController = new AbortController();

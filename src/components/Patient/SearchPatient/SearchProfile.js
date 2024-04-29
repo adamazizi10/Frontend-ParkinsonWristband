@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import '../PatientProfile/PatientDetails.css';
 import { MDBContainer } from 'mdb-react-ui-kit';
 
-const REACT_APP_GET_ALL_PATIENT_DATA = process.env.REACT_APP_GET_ALL_PATIENT_DATA;
-const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = process.env.REACT_APP_GET_SPECIFIC_PATIENT_DETAILS;
-const REACT_APP_GET_ALL_DOCTOR_DATA = process.env.REACT_APP_GET_ALL_DOCTOR_DATA;
+const REACT_APP_GET_ALL_PATIENT_DATA = `${process.env.REACT_APP_API_BASE_URL}/get-all-patient-data`;
+const REACT_APP_GET_SPECIFIC_PATIENT_DETAILS = `${process.env.REACT_APP_API_BASE_URL}/get-specific-patient-details/`;
+const REACT_APP_GET_ALL_DOCTOR_DATA = `${process.env.REACT_APP_API_BASE_URL}/get-all-doctor-data`;
 
 function SearchPatient({ onPatientDataRecieved, changeState, SignedInDoctorData, onPatientFirstAndLastNameRecieved, patientFirstAndLastName }) {
     const [patientData, setPatientData] = useState([]);

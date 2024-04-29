@@ -4,7 +4,7 @@ import '../../Patient/AddPatient/AddPatient.css';
 import { Typewriter } from 'react-simple-typewriter'
 import { motion } from 'framer-motion';
 
-const REACT_APP_SIGNIN_DOCTOR = process.env.REACT_APP_SIGNIN_DOCTOR;
+const REACT_APP_SIGNIN_DOCTOR = `${process.env.REACT_APP_API_BASE_URL}/signinDoctor`;
 
 function SignInDoctor({ onDoctorDataRecieved, changeState }) {
     const [email, setEmail] = useState('');
