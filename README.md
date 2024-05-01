@@ -27,7 +27,7 @@ The final GUI implementation consists of six different pages:
 6) Patient Profile (Figure 6): With this feature, physicians can examine a patient's Parkinson's-related data and analyze tremor data in three dimensions.
 
 <div align="center">
-  <img src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/97cc79c9-ae0b-44bc-886f-914ef2380df5" alt="Parkinson's Disease GUI" />
+  <img src="https://github.com/adamazizi10/Frontend-ParkinsonWristband/assets/106051947/97cc79c9-ae0b-44bc-886f-914ef2380df5" alt="Parkinson's Disease Wristband GUI" />
 </div>
 
 # Design of the GUI 
