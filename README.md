@@ -5,6 +5,8 @@
 * A Wristband equipped with accelerometers in three dimensions to detect tremors
 * Machine Learning Algorithm to predict the tremors as No Parkinsons, Low, Medium, and High
 * The GUI that is the central tool for this project which is this repository
+
+About the GUI:
 * The frontend of the GUI is created in React.js which is in this repository
 * The backend is created in Node.js which is in a different repository
 * Backend Repository can be accessed here: [https://github.com/adamazizi10/Backend-ParkinsonWristband](https://github.com/adamazizi10/Backend-ParkinsonWristband)
